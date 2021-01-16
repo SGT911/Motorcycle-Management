@@ -1,0 +1,8 @@
+[database]
+user='root'
+password='mysql admin'
+
+database='motorcycle_management'
+
+host='localhost'
+port=3306
