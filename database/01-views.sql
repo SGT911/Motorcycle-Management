@@ -11,6 +11,6 @@ CREATE VIEW resources_details
 	FROM resources AS res
 		LEFT JOIN used_resources AS used_res
 			ON res.id = used_res.resource
-		inner JOIN users AS usr
+		LEFT JOIN users AS usr
 			ON used_res.user = usr.id
 	GROUP BY res.id, res.resource_date;
