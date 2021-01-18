@@ -1,5 +1,6 @@
 import jsonschema
 import jsonschema.exceptions
+import re
 from errors import ValidationError
 from typing import Any, Optional
 
@@ -13,3 +14,8 @@ def validate(instance: Any, schema: Any) -> Optional[Exception]:
 		))
 	
 	return None
+
+def validate_date(str_date: str) -> bool:
+	regexp = re.compile(r'\d{4}-\d{2}-\d{2}')
+
+	return regexp.fullmatch(str_date)

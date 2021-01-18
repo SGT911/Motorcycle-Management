@@ -1,4 +1,6 @@
-from datetime import date, time, datetime
+from datetime import date, time, datetime, timedelta
+
+ONE_DAY = timedelta(days=1)
 
 
 def to_datetime(source_date: date, source_time: time) -> datetime:
@@ -12,3 +14,9 @@ def to_datetime(source_date: date, source_time: time) -> datetime:
 		hour=source_time.hour,
 		minute=source_time.minute,
 	)
+
+
+def parse_date(sorce_date: str) -> date:
+	year, month, day = tuple(map(int, sorce_date.split('-')))
+
+	return date(year=year, month=month, day=day)

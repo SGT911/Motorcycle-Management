@@ -17,7 +17,7 @@ class ApiBlueprint(Blueprint):
 
 class APIError(dict):
 	def __init__(self, name: str = 'Error', description: Any = None):
-		super().__init__(
+		super(APIError, self).__init__(
 			name=name,
 			description=description,
 		)
@@ -43,7 +43,7 @@ class APIResponse(dict):
 
 		if payload is None:
 			data['payload'] = None
-		elif isinstance(payload, dict):
+		elif isinstance(payload, (dict, list)):
 			data['payload'] = payload
 		elif isinstance(payload, DecodableModel):
 			data['payload'] = payload.to_json()
@@ -56,7 +56,7 @@ class APIResponse(dict):
 			else:
 				data['error'] = error
 
-		super().__init__(**data)
+		super(APIResponse, self).__init__(**data)
 
 
 def parse_request() -> Any:

@@ -1,7 +1,7 @@
 from controllers import get_db, CursorHandler
 from models import Resource, User
 from typing import List, Optional, Union
-from utils.dates import date, time, to_datetime
+from utils.dates import date, time, to_datetime, ONE_DAY
 
 
 def get_all() -> List[Resource]:
@@ -13,7 +13,26 @@ def get_all() -> List[Resource]:
 				users,
 				user_count
 			FROM resources_details
+			ORDER BY resource_date DESC
 		""")
+
+		return [Resource.parse_from_db(*resource) for resource in cur.fetchall()]
+	
+
+def get_date_range(start_date: date) -> List[Resource]:
+	finsh_date = start_date + ONE_DAY
+
+	with CursorHandler(get_db()) as cur:
+		cur.execute("""
+			SELECT
+				id AS resource_id,
+				resource_date,
+				users,
+				user_count
+			FROM resources_details
+				WHERE resource_date >= %s AND resource_date < %s
+			ORDER BY resource_date DESC
+		""", (start_date, finsh_date))
 
 		return [Resource.parse_from_db(*resource) for resource in cur.fetchall()]
 
