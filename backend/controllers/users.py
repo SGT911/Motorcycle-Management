@@ -16,6 +16,7 @@ def login(user_name: str, password: str) -> Optional[User]:
 				creation_date
 			FROM users
 				WHERE user_name = %s AND password = %s
+				LIMIT 1
 		""", (user_name, password))
 
 		if cur.rowcount > 0:
@@ -36,6 +37,7 @@ def get_one(user_name: str) -> Optional[User]:
 				creation_date
 			FROM users
 				WHERE user_name = %s
+				LIMIT 1
 		""", (user_name,))
 
 		if cur.rowcount > 0:
