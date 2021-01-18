@@ -1,11 +1,11 @@
 from flask import jsonify, make_response, redirect, url_for
-from typing import Tuple
 from utils.api import ApiBlueprint, APIResponse, parse_request
+from typing import Tuple
 
 import requests
 
 from errors import ValidationError, NotFound
-from controllers import users
+from controllers import users as controller
 from validators.users import check_username, validate_schema
 
 AVATAR_LINK = 'https://ui-avatars.com/api/?background=random&color=random&size=256&format=svg&length=3&rounded=true&name=%s'
@@ -23,7 +23,7 @@ def get_user(user_name: str) -> Tuple[str, int]:
 			error=ValidationError(f'The user name "{user_name}" is not valid'),
 		)), 400
 	
-	user = users.get_one(user_name)
+	user = controller.get_one(user_name)
 	if user is None:
 		return jsonify(APIResponse(
 			error=NotFound(f'The user name "{user_name}" was not found'),
@@ -37,14 +37,14 @@ def get_user(user_name: str) -> Tuple[str, int]:
 @router.route('/<string:user_name>/avatar', methods=['GET'])
 def get_avatar(user_name: str) -> Tuple[str, int]:
 	if not user_name.isupper():
-		return redirect(url_for('api.users.get_user', user_name=user_name.upper()))
+		return redirect(url_for('api.users.get_avatar', user_name=user_name.upper()))
 
 	if not check_username(user_name):
 		return jsonify(APIResponse(
 			error=ValidationError(f'The user name "{user_name}" is not valid'),
 		)), 400
 	
-	if not users.exist(user_name):
+	if not controller.exist(user_name):
 		return jsonify(APIResponse(
 			error=NotFound(f'The user name "{user_name}" was not found'),
 		)), 404
@@ -70,7 +70,7 @@ def create() -> Tuple[str, int]:
 			return jsonify(APIResponse(error=error)), 400
 	
 	try:
-		user = users.create(**data)
+		user = controller.create(**data)
 	except ValueError as error:
 		return jsonify(APIResponse(error=error)), 500
 	else:
@@ -89,7 +89,7 @@ def login() -> Tuple[str, int]:
 		if error is not None:
 			return jsonify(APIResponse(error=error)), 400
 	
-	user = users.login(**data)
+	user = controller.login(**data)
 	if user is None:
 		return jsonify(APIResponse(
 			error=NotFound(f'The user "{data["user_name"]}" was not found or was sent incorrect credentials')),
