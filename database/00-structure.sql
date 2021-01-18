@@ -11,7 +11,7 @@ CREATE TABLE users (
 
 CREATE TABLE resources (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	resource_date DATETIME NOT NULL
+	resource_date DATETIME NOT NULL UNIQUE
 );
 
 CREATE TABLE used_resources (
