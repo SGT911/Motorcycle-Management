@@ -71,7 +71,8 @@ def exist(resource_id: int) -> bool:
 
 
 def create(resource_date: date, resource_time: time) -> int:
-	if resource := get_by_date(resource_date, resource_time) is not None:
+	resource = get_by_date(resource_date, resource_time)
+	if resource is not None:
 		return resource.resource_id
 
 	resource_datetime = to_datetime(resource_date, resource_time)
@@ -95,7 +96,7 @@ def attach_user(resource: int, user: Union[User, int]) -> Resource:
 	if not exist(resource):
 		raise ValueError(f'The resource {resource} does not exist')
 
-	if instanceof(user, User):
+	if isinstance(user, User):
 		user_id = user.user_id
 	else:
 		user_id = user

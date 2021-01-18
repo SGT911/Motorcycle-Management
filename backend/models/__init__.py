@@ -3,13 +3,23 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import List, Union
 
+class DecodableModel:
+	def to_json(self) -> dict:
+		return self.__dict__
 
 @dataclass
-class User:
+class User(DecodableModel):
 	user_id: int
 	user_name: str
 	password: str
 	creation_date: datetime
+
+	def to_json(self) -> dict:
+		return dict(
+			user_id=self.user_id,
+			user_name=self.user_name,
+			creation_date=self.creation_date.isoformat(),
+		)
 
 	@staticmethod
 	def parse_from_db(user_id, user_name, password, creation_date) -> User:
@@ -17,7 +27,7 @@ class User:
 
 
 @dataclass
-class Resource:
+class Resource(DecodableModel):
 	resource_id: int
 	resource_date: datetime
 	users: List[Union[str, User]]
