@@ -59,6 +59,45 @@ def handle_resource_socket(socket, socket_store, resource_date: str):
 			payload=dict(**payload)
 		)))
 	
+	def detach_resource(payload):
+		error = validate_schema(payload)
+		if error is not None:
+			return socket.send(json_dump(SocketResponse(
+				action='error',
+				error=error,
+			)))
+
+		user = controllers.users.get_one(payload['user_name'])
+		if user is None:
+			return socket.send(json_dump(SocketResponse(
+				action='error',
+				error=NotFound(f'The user name "{payload["user_name"]}" was not found'),
+			)))
+
+		resource = controllers.resources.get_by_date(
+			resource_date=parse_date(resource_date),
+			resource_time=parse_time(payload['time']),
+		)
+		
+		if payload['user_name'] not in resource.users:
+			return socket.send(json_dump(SocketResponse(
+				action='error',
+				error=InternalError(f'The user "{payload["user_name"]}" is not using this resource'),
+			)))
+
+		resource = controllers.resources.detach_user(
+			resource=resource.resource_id,
+			user=user,
+		)
+
+		if resource.user_count == 0:
+			controllers.resources.delete(resource.resource_id)
+
+		return socket_store.send(json_dump(SocketResponse(
+			action='remove_user',
+			payload=dict(**payload)
+		)))
+	
 	if not validate_date(resource_date):
 		socket.send(json_dump(SocketResponse(
 			action='error',
@@ -71,6 +110,5 @@ def handle_resource_socket(socket, socket_store, resource_date: str):
 		handle_actions(
 			socket,
 			attach_resource=attach_resource,
-			# TODO: Create dettach_resource handler
-			# dettach_resource=dettach_resource,
+			detach_resource=detach_resource,
 		)

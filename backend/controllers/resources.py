@@ -111,6 +111,22 @@ def create(resource_date: date, resource_time: time) -> int:
 			return get_by_date(resource_date, resource_time).resource_id
 
 
+def delete(resource_id: int) -> int:
+	if not exist(resource_id):
+		raise ValueError(f'The resource {resource_id} does not exist')
+	
+	with CursorHandler(get_db()) as cur:
+		try:
+			cur.execute("""
+				DELETE FROM resources WHERE id = %s
+			""", (resource_id, ))
+		except Exception as e:
+			get_db().rollback()
+			raise e
+		else:
+			get_db().commit()
+
+
 def attach_user(resource: int, user: Union[User, int]) -> Resource:
 	if not exist(resource):
 		raise ValueError(f'The resource {resource} does not exist')
@@ -126,6 +142,39 @@ def attach_user(resource: int, user: Union[User, int]) -> Resource:
 				INSERT INTO used_resources (resource, user)
 					VALUES (%s, %s)
 			""", (resource, user_id))
+		except Exception as e:
+			get_db().rollback()
+			raise e
+		else:
+			get_db().commit()
+
+			return get_by_id(resource)
+
+
+def detach_user(resource: int, user: Union[User, int]) -> Resource:
+	if not exist(resource):
+		raise ValueError(f'The resource {resource} does not exist')
+
+	if isinstance(user, User):
+		user_id = user.user_id
+	else:
+		user_id = user
+
+	with CursorHandler(get_db()) as cur:
+		try:
+			cur.execute("""
+				SELECT id FROM used_resources
+					WHERE resource = %s AND user = %s
+					LIMIT 1
+			""", (resource, user_id))
+
+			if cur.rowcount == 0:
+				return get_by_id(resource)
+			
+			cur.execute("""
+				DELETE FROM used_resources WHERE id = %s
+			""", cur.fetchone())
+
 		except Exception as e:
 			get_db().rollback()
 			raise e
