@@ -15,6 +15,23 @@ def validate(instance: Any, schema: Any) -> Optional[Exception]:
 	
 	return None
 
+def validate_socket_message(instance: Any) -> Optional[Exception]:
+	schema = {
+		'type': 'object',
+		'required': [
+			'action',
+		],
+		'additionalProperties': False,
+		'properties': {
+			'action': {
+				'type': 'string',
+			},
+			'payload': {},
+		}
+	}
+
+	return validate(instance, schema)
+
 def validate_date(str_date: str) -> bool:
 	regexp = re.compile(r'\d{4}-\d{2}-\d{2}')
 

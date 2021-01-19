@@ -3,6 +3,7 @@ from models import DecodableModel
 from typing import Any, Union, Optional
 from flask import Blueprint, request
 from json import loads as json_load
+from json.decoder import JSONDecodeError
 from errors import InternalError, DecodingError
 
 class ApiBlueprint(Blueprint):
@@ -26,7 +27,9 @@ class APIError(dict):
 	def parse_exception(error: Exception) -> APIError:
 		description = None
 		if isinstance(error.args, tuple) or isinstance(error.args, list):
-			if len(error.args) > 0:
+			if len(error.args) == 1:
+				description = error.args[0]
+			elif len(error.args) > 1:
 				description = ', '.join(error.args)
 		else:
 			description = error.args
@@ -41,14 +44,10 @@ class APIResponse(dict):
 	def __init__(self, payload: Any = None, error: Optional[Union[Exception, APIError]] = None):
 		data = dict()
 
-		if payload is None:
-			data['payload'] = None
-		elif isinstance(payload, (dict, list)):
-			data['payload'] = payload
-		elif isinstance(payload, DecodableModel):
+		if isinstance(payload, DecodableModel):
 			data['payload'] = payload.to_json()
 		else:
-			data['payload'] = payload.__dict__
+			data['payload'] = payload
 
 		if error is not None:
 			if isinstance(error, Exception):
@@ -65,7 +64,7 @@ def parse_request() -> Any:
 	if content_type == 'application/json':
 		try:
 			return json_load(request.data)
-		except Exception as error:
+		except JSONDecodeError as error:
 			raise DecodingError(error.args[0])
 	else:
 		raise InternalError(f'The content-type "{content_type}" has not handler')
