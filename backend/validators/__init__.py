@@ -9,9 +9,13 @@ def validate(instance: Any, schema: Any) -> Optional[Exception]:
 	try:
 		jsonschema.validate(instance, schema)
 	except jsonschema.exceptions.ValidationError as error:
-		# TODO: Complete error context
 		return ValidationError(dict(
 			message=error.message,
+			context=dict(
+				path='.'.join(error.relative_schema_path),
+				instance=error.instance,
+				validation=error.validator_value,
+			),
 		))
 	
 	return None
