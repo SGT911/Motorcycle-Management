@@ -6,3 +6,7 @@ database='motorcycle_management'
 
 host='localhost'
 port=3306
+
+[config]
+available_resources=8
+time_resolition=30

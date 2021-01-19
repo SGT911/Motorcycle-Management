@@ -1,5 +1,6 @@
 from utils.api import ApiBlueprint
 from utils.ws import SocketResponse, socket_store, handle_actions
+from utils.config import DATA as ENV
 from utils.dates import parse_date, parse_time
 from validators.resources import validate_schema
 from validators import validate_date
@@ -9,6 +10,7 @@ import controllers.resources
 import controllers.users
 
 router = ApiBlueprint('ws.resources', __name__)
+
 
 @router.route('/<string:resource_date>')
 @socket_store('handle_resource_socket', filter_route=True)
@@ -33,12 +35,16 @@ def handle_resource_socket(socket, socket_store, resource_date: str):
 			resource_time=parse_time(payload['time']),
 		)
 
+		resource_time = parse_time(payload['time'])
+		if (resource_time.minute % ENV['config']['time_resolution']) != 0:
+			raise ValueError('source_time.minute must be divisible by 30')
+
 		signed_up_users = controllers.resources.get_by_date(
 			resource_date=parse_date(resource_date),
-			resource_time=parse_time(payload['time']),
+			resource_time=resource_time,
 		).users
 
-		if len(signed_up_users) >= 8:
+		if len(signed_up_users) >= ENV['config']['available_resources']:
 			return socket.send(json_dump(SocketResponse(
 				action='error',
 				error=InternalError(f'The resource is already full'),
@@ -78,6 +84,12 @@ def handle_resource_socket(socket, socket_store, resource_date: str):
 			resource_date=parse_date(resource_date),
 			resource_time=parse_time(payload['time']),
 		)
+
+		if resource is None:
+			return socket.send(json_dump(SocketResponse(
+				action='error',
+				error=NotFound(f'The resource was not found'),
+			)))
 		
 		if payload['user_name'] not in resource.users:
 			return socket.send(json_dump(SocketResponse(
@@ -109,6 +121,6 @@ def handle_resource_socket(socket, socket_store, resource_date: str):
 	while not socket.closed:
 		handle_actions(
 			socket,
-			attach_resource=attach_resource,
-			detach_resource=detach_resource,
+			on_attach_resource=attach_resource,
+			on_detach_resource=detach_resource,
 		)

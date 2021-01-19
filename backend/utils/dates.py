@@ -4,9 +4,6 @@ ONE_DAY = timedelta(days=1)
 
 
 def to_datetime(source_date: date, source_time: time) -> datetime:
-	if (source_time.minute % 30) != 0:
-		raise ValueError('source_time.minute must be 30 or 00')
-
 	return datetime(
 		year=source_date.year,
 		month=source_date.month,

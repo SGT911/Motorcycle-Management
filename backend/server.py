@@ -7,6 +7,7 @@ from flask_sockets import Sockets
 
 from routes.api.users import router as user_router
 from routes.api.resources import router as resource_router
+from routes.api.config import router as config_router
 from routes.ws.resources import router as resource_ws_router
 
 app = Flask(__name__)
@@ -16,6 +17,7 @@ cors = CORS(app, resources={ r'/*': { 'origin': r'*' } })
 # Routing
 app.register_blueprint(user_router, url_prefix='/api/users')
 app.register_blueprint(resource_router, url_prefix='/api/resources')
+app.register_blueprint(config_router, url_prefix='/api/config')
 socket.register_blueprint(resource_ws_router, url_prefix='/ws/resources')
 
 if __name__ == '__main__':
