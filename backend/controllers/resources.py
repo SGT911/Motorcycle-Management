@@ -66,7 +66,7 @@ def get_by_id(resource_id: int) -> Optional[Resource]:
 				resource_date,
 				users,
 				user_count
-			FROM resources
+			FROM resources_details
 				WHERE id = %s
 				LIMIT 1
 		""", (resource_id, ))
@@ -125,7 +125,7 @@ def attach_user(resource: int, user: Union[User, int]) -> Resource:
 			cur.execute("""
 				INSERT INTO used_resources (resource, user)
 					VALUES (%s, %s)
-			""", (resource, user))
+			""", (resource, user_id))
 		except Exception as e:
 			get_db().rollback()
 			raise e
