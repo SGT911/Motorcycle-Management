@@ -33,6 +33,13 @@ class Resource(DecodableModel):
 	users: List[Union[str, User]]
 	user_count: int
 
+	def to_json(self) -> dict:
+		return dict(
+			resource_id=self.resource_id,
+			resource_date=self.resource_date.isoformat()[:16],
+			users=self.users,
+		)
+
 	@staticmethod
 	def parse_from_db(resource_id, resource_date, users, user_count) -> Resource:
 		if users is None:
