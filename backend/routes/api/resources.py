@@ -21,14 +21,14 @@ def get_all() -> Tuple[str, int]:
 def get_range_date(search_date: str) -> Tuple[str, int]:
 	if not validate_date(search_date):
 		return jsonify(APIResponse(
-			error=ValidationError('The date is not valid.'),
+			error=ValidationError('The date is not valid'),
 		)), 400
 	
 	try:
 		search_date = parse_date(search_date)
 	except ValueError:
 		return jsonify(APIResponse(
-			error=ValidationError('The date is not valid.'),
+			error=ValidationError('The date is not valid'),
 		)), 400
 	else:
 		return jsonify(APIResponse(

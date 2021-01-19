@@ -1,6 +1,7 @@
 import jsonschema
 import jsonschema.exceptions
 import re
+from utils.dates import parse_date
 from errors import ValidationError
 from typing import Any, Optional
 
@@ -35,4 +36,11 @@ def validate_socket_message(instance: Any) -> Optional[Exception]:
 def validate_date(str_date: str) -> bool:
 	regexp = re.compile(r'\d{4}-\d{2}-\d{2}')
 
-	return regexp.fullmatch(str_date)
+	if regexp.fullmatch(str_date) is not None:
+		try:
+			parse_date(str_date)
+		except ValueError:
+			return False
+		else:
+			return True
+	return False
