@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import ButtonLink from '../ButtonLink'
-import Container from '../Container'
+import { buttonStyles } from '../../styles'
+
+import { NavBar } from '../NavBar'
+import { ButtonLink } from '../ButtonLink'
+import { Container } from '../Container'
 
 import { Button } from 'antd'
 import { Divider, Typography } from 'antd'
-
-const buttonStyles = {
-	marginRight: '10px'
-}
 
 const Test = () => {
 	const [counter, setState] = useState(0)
@@ -18,6 +17,7 @@ const Test = () => {
 
 	return (
 		<Container span={12}>
+			<NavBar />
 			<Typography.Paragraph style={{textAlign: 'center'}}>
 				{ counter }
 			</Typography.Paragraph>

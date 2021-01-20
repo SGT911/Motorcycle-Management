@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-const ButtonLink = ({ to, children, type }) => {
+export const ButtonLink = ({ to, children, type }) => {
 	if (!type) {
 		type = 'link'
 	}
@@ -14,5 +14,3 @@ const ButtonLink = ({ to, children, type }) => {
 		</Link>
 	)
 }
-
-export default ButtonLink

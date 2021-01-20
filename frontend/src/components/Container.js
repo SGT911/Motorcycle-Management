@@ -4,7 +4,7 @@ const containerStyle = {
 	marginTop: '2em'
 }
 
-const Container = ({span, children}) => {
+export const Container = ({span, children}) => {
 	if ((span % 2) !== 0) {
 		throw new Error("The span property must be a pair number")
 	}
@@ -19,5 +19,3 @@ const Container = ({span, children}) => {
 		</Row>
 	)
 }
-
-export default Container

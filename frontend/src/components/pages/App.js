@@ -1,6 +1,5 @@
-import ButtonLink from '../ButtonLink'
-import Container from '../Container'
-
+import { ButtonLink } from '../ButtonLink'
+import { Container } from '../Container'
 import { Typography } from 'antd'
 
 import logo from '../../assets/logo.svg'
