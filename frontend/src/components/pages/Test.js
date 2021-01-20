@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { buttonStyles } from '../../styles'
 
 import { NavBar } from '../NavBar'
@@ -16,29 +16,31 @@ const Test = () => {
 	const reset = () => setState(0)
 
 	return (
-		<Container span={12}>
-			<NavBar />
-			<Typography.Paragraph style={{textAlign: 'center'}}>
-				{ counter }
-			</Typography.Paragraph>
-			<Button
-				style={buttonStyles}
-				danger={true}
-				onClick={substract}
-			> - Substract </Button>
-			<Button
-				style={buttonStyles}
-				type="primary"
-				onClick={add}
-			> + Add </Button>
-			<Button
-				style={buttonStyles}
-				type="default"
-				onClick={reset}
-			> Reset </Button>
-			<Divider />
-			<ButtonLink to="/">To Home</ButtonLink>
-		</Container>
+		<React.Fragment>
+			<NavBar path="/test" />
+			<Container span={12}>
+				<Typography.Paragraph style={{textAlign: 'center'}}>
+					{ counter }
+				</Typography.Paragraph>
+				<Button
+					style={buttonStyles}
+					danger={true}
+					onClick={substract}
+				> - Substract </Button>
+				<Button
+					style={buttonStyles}
+					type="primary"
+					onClick={add}
+				> + Add </Button>
+				<Button
+					style={buttonStyles}
+					type="default"
+					onClick={reset}
+				> Reset </Button>
+				<Divider />
+				<ButtonLink to="/">To Home</ButtonLink>
+			</Container>
+		</React.Fragment>
 	)
 }
 	
