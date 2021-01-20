@@ -8,9 +8,9 @@ import { Form, Input, Checkbox, Button } from 'antd'
 import { notification } from 'antd'
 
 import { UserOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons'
-import { request, storage } from '../../lib'
+import { request } from '../../lib'
 
-const Login = () => {
+const Register = () => {
 	const history = useHistory()
 	const [state, setState] = useState({
 		user: null,
@@ -52,7 +52,7 @@ const Login = () => {
 		})
 	}
 
-	const sendLogin = async () => {
+	const sendRegister = async () => {
 		if (state.user === null || state.password === null) {
 			return notification.error({
 				message: 'Validation Error',
@@ -60,7 +60,7 @@ const Login = () => {
 			})
 		}
 
-		let req = await request('/api/users/login')
+		let req = await request('/api/users')
 		.post()
 		.addBody({
 			user_name: state.user,
@@ -68,25 +68,23 @@ const Login = () => {
 		})
 		.send()
 
-		if (req.status === 200) {
-			storage.set('user', req.body.payload.user_name)
+		if (req.status === 201) {
 			notification.success({
-				message: 'Log In successfully',
-				description: `Welcome ${req.body.payload.user_name}.`
+				message: 'User created successfully',
 			})
 
-			return history.push('/')
+			return history.push('/login')
 		}
 
 		return notification.error({
-			message: 'Credential Error',
-			description: 'The user doesn\'t exist or the credentials are incorrect.'
+			message: 'Connection Error',
+			description: `<${req.body.error.name}(${req.body.error.description?? ''})>`
 		})
 	}
 
 	const sendOnEnter = ({code}) => {
 		if (code === 'Enter') {
-			return sendLogin()
+			return sendRegister()
 		}
 	}
 
@@ -133,18 +131,18 @@ const Login = () => {
 				<Form.Item wrapperCol={{span: 18, offset: 6}}>
 					<Button
 						style={buttonStyles}
-						onClick={sendLogin}
+						onClick={sendRegister}
 						type="primary"
-					>Log In</Button>
+					>Sign Up</Button>
 					<ButtonLink
 						style={buttonStyles}
-						to="/register"
+						to="/login"
 						type="link"
-					>Sign Up</ButtonLink>
+					>Log In</ButtonLink>
 				</Form.Item>
 			</Form>
 		</Container>
 	)
 }
 
-export default Login
+export default Register
