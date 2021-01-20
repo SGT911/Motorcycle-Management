@@ -6,9 +6,10 @@ import {
 	Route
 } from 'react-router-dom'
 
-import './index.css'
-import App from './components/App'
-import Test from './components/Test'
+import 'antd/dist/antd.min.css'
+
+import App from './components/pages/App'
+import Test from './components/pages/Test'
 
 const appEl = document.getElementById('root')
 
