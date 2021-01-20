@@ -96,3 +96,19 @@ def login() -> Tuple[str, int]:
 		), 401
 	
 	return jsonify(APIResponse(payload=user)), 200
+
+
+@router.route('/password', methods=['PUT'])
+def change_password() -> Tuple[str, int]:
+	data = None
+	try:
+		data = parse_request()
+	except Exception as error:
+		return jsonify(APIResponse(error=error)), 400
+	else:
+		error = validate_schema(data)
+		if error is not None:
+			return jsonify(APIResponse(error=error)), 400
+	
+	controller.change_password(**data)
+	return jsonify(APIResponse(payload='modified')), 200

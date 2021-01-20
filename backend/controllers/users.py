@@ -69,3 +69,23 @@ def create(user_name: str, password: str) -> User:
 			get_db().commit()
 
 			return get_one(user_name)
+
+
+def change_password(user_name: str, password: str):
+	password, user_name = hash_password(password), user_name.upper()
+
+	if not exist(user_name):
+		raise ValueError(f'The user "{ user_name }" dows not exist')
+
+	with CursorHandler(get_db()) as cur:
+		try:
+			cur.execute("""
+				UPDATE users
+					SET password = %s
+					WHERE user_name = %s
+			""", (password, user_name))
+		except Exception as e:
+			get_db().rollback()
+			raise e
+		else:
+			get_db().commit()
