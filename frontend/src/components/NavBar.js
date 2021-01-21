@@ -28,7 +28,6 @@ export const NavBar = ({ path }) => {
 	const history = useHistory()
 
 	const handleClick = ({ key }) => {
-		console.log(key)
 		if (!/item_.*/.test(key) && key !== path) {
 			history.push(key)
 		}
