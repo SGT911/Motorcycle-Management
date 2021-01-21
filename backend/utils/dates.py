@@ -4,13 +4,7 @@ ONE_DAY = timedelta(days=1)
 
 
 def to_datetime(source_date: date, source_time: time) -> datetime:
-	return datetime(
-		year=source_date.year,
-		month=source_date.month,
-		day=source_date.day,
-		hour=source_time.hour,
-		minute=source_time.minute,
-	)
+	return datetime.combine(source_date, source_time)
 
 
 def parse_date(source_date: str) -> date:

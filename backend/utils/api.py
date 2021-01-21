@@ -48,6 +48,8 @@ class APIResponse(dict):
 			data['payload'] = payload.to_json()
 		elif isinstance(payload, (list, tuple, set)) and len(payload) > 0 and isinstance(payload[0], DecodableModel):
 			data['payload'] = [data.to_json() for data in payload]
+		elif isinstance(payload, dict) and len(payload) > 0 and isinstance(list(payload.values())[0], DecodableModel):
+			data['payload'] = {k: v.to_json() for k, v in payload.items()}
 		else:
 			data['payload'] = payload
 
