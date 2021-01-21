@@ -16,7 +16,6 @@ class User(DecodableModel):
 
 	def to_json(self) -> dict:
 		return dict(
-			user_id=self.user_id,
 			user_name=self.user_name,
 			creation_date=self.creation_date.isoformat(),
 		)
@@ -35,7 +34,6 @@ class Resource(DecodableModel):
 
 	def to_json(self) -> dict:
 		return dict(
-			resource_id=self.resource_id,
 			resource_date=self.resource_date.isoformat()[:16],
 			users=self.users,
 		)
