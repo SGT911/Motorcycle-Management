@@ -54,7 +54,12 @@ export const storage = {
  */
 export function range(length, start = 0, step = 1) {
 	const arr = new Array()
-	for (let i = 0; i < length; i += step) arr.push(start + i)
+	arr.push(start)
+	let before = start
+	for (let i = 0; i < length - 1; i++) {
+		before += step
+		arr.push(before)
+	}
 
 	return arr
 }
