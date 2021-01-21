@@ -9,4 +9,4 @@ port=3306
 
 [config]
 available_resources=8
-time_resolition=30
+time_resolution=30

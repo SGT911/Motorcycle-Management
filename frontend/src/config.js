@@ -4,7 +4,7 @@ import { request } from "./lib"
  * @type {{
  * 	apiOrigin: string;
  * 	appConfig: () => Promise<{
- * 		time_resolition: number;
+ * 		time_resolution: number;
  * 		available_resources: number;
  * 	}>
  * }}
