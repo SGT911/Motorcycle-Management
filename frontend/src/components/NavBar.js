@@ -28,7 +28,8 @@ export const NavBar = ({ path }) => {
 	const history = useHistory()
 
 	const handleClick = ({ key }) => {
-		if (key !== 'ignore' && key !== path) {
+		console.log(key)
+		if (!/item_.*/.test(key) && key !== path) {
 			history.push(key)
 		}
 	}
@@ -50,21 +51,17 @@ export const NavBar = ({ path }) => {
 				})
 			}
 			<Menu.SubMenu
-				key="ignore"
 				title="User"
 				icon={<UserOutlined />}
 			>
 				<Menu.Item key="/logout" icon={<LogoutOutlined />}>
 					Log Out
 				</Menu.Item>
-				<Menu.Item key="ignore" icon={<LockOutlined />}>
+				<Menu.Item key="/changePassword" icon={<LockOutlined />}>
 					Change Password
 				</Menu.Item>
 			</Menu.SubMenu>
-			<Menu.Item
-				key="ignore"
-				style={{ float: 'right' }}
-			>
+			<Menu.Item style={{ float: 'right' }}>
 				<Switch
 					defaultChecked={storage.get('theme') === 'dark'}
 					onClick={handleTheme}
