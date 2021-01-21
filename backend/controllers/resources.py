@@ -20,7 +20,7 @@ def get_all() -> List[Resource]:
 	
 
 def get_date_range(start_date: date) -> List[Resource]:
-	finsh_date = start_date + ONE_DAY
+	finish_date = start_date + ONE_DAY
 
 	with CursorHandler(get_db()) as cur:
 		cur.execute("""
@@ -32,7 +32,7 @@ def get_date_range(start_date: date) -> List[Resource]:
 			FROM resources_details
 				WHERE resource_date >= %s AND resource_date < %s
 			ORDER BY resource_date DESC
-		""", (start_date, finsh_date))
+		""", (start_date, finish_date))
 
 		return [Resource.parse_from_db(*resource) for resource in cur.fetchall()]
 

@@ -34,7 +34,8 @@ def get_range_date_chrono(search_date: str) -> Tuple[str, int]:
 			},
 			**acc)
 
-		by_time = reduce(reduce_hadler, controller.get_date_range(search_date), dict())
+		resources = controller.get_date_range(search_date)
+		by_time = reduce(reduce_hadler, resources, dict())
 
 		idx_time, response = time(8, 0), list()
 		while idx_time <= time(20, 0):
