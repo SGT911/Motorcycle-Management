@@ -4,6 +4,12 @@ const containerStyle = {
 	marginTop: '2em'
 }
 
+/**
+ * @param {{
+ * 	span: number;
+ * 	children: JSX.Element;
+ * }} props
+ */
 export const Container = ({span, children}) => {
 	if ((span % 2) !== 0) {
 		throw new Error("The span property must be a pair number")

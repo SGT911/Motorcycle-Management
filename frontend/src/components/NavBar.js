@@ -24,6 +24,12 @@ const routes = [
 	}
 ]
 
+/**
+ * 
+ * @param {{
+ * 	path: string
+ * }} props 
+ */
 export const NavBar = ({ path }) => {
 	const history = useHistory()
 
