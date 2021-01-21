@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom'
 
 import App from './components/pages/App'
-import Test from './components/pages/Test'
 import Login from './components/pages/Login'
 import Logout from './components/pages/Logout'
 import Register from './components/pages/Register'
@@ -21,10 +20,6 @@ const appEl = document.getElementById('root')
 ReactDOM.render(
 	<Router hashType="noslash">
 		<Switch>
-			<Route path="/test">
-				<Middlewares.MustBeLoggedIn />
-				<Test />
-			</Route>
 			<Route path="/logout">
 				<Logout />
 			</Route>

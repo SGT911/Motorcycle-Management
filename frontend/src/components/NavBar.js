@@ -16,11 +16,6 @@ const routes = [
 		name: 'Home',
 		path: '/',
 		icon: HomeOutlined
-	},
-	{
-		name: 'Test',
-		path: '/test',
-		icon: FileUnknownOutlined
 	}
 ]
 

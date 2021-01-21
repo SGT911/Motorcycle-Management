@@ -53,7 +53,7 @@ export const storage = {
  * @returns {Array<number>}
  */
 export function range(length, start = 0, step = 1) {
-	const arr = new Array()
+	const arr = []
 	arr.push(start)
 	let before = start
 	for (let i = 0; i < length - 1; i++) {
@@ -117,6 +117,18 @@ class APIRequest {
 	}
 
 	/**
+	 * @returns {APIRequest}
+	 */
+	forceNoCache() {
+		if (/\?/.test(this.url)) {
+			this.url += '&_rand=' + parseInt(Math.random() * 1e10).toString()
+		} else {
+			this.url += '?_rand=' + parseInt(Math.random() * 1e10).toString()
+		}
+		return this
+	}
+
+	/**
 	 * @param {'GET' | 'POST' | 'PUT' | 'OPTIONS' | 'DELTE'} method 
 	 * @returns {APIRequest}
 	 */
@@ -168,7 +180,13 @@ class APIRequest {
 
 	/**
 	 * @returns {Promise<{
-	 * 	body: any | string;
+	 * 	body: string | {
+	 * 		payload: any;
+	 * 		error?: {
+	 * 			name: string;
+	 * 			description: any;
+	 * 		};
+	 * 	};
 	 *  status: number;
 	 * 	headers: Headers;
 	 * }>}

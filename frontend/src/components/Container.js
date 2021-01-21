@@ -19,7 +19,12 @@ export const Container = ({span, children}) => {
 
 	return (
 		<Row>
-			<Col style={containerStyle} span={span} offset={offset}>
+			<Col
+				style={containerStyle}
+				xs={{span: 20, offset: 2}}
+				sm={{span: 18, offset: 3}}
+				md={{span, offset}}
+			>
 				{children}
 			</Col>
 		</Row>
