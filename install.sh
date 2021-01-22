@@ -21,7 +21,7 @@ echo "========================"
 echo "=== Building BackEnd ==="
 echo "========================"
 
-cd $ACTUAL_DIR
+cd ..
 cp -rv ./backend $INSTALL_DIR/.
 cp -rv ./config $INSTALL_DIR/.
 
