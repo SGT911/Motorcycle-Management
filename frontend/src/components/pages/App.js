@@ -124,7 +124,13 @@ const App = () => {
 			}
 
 
-			if (action === 'Attach' && !resourceIsUsed && el.users.length < state.availableResources) {
+			if (action === 'Attach' && !resourceIsUsed) {
+				if (el.users.length >= state.availableResources) {
+					return notification.warning({
+						message: 'The resource is full'
+					})
+				}
+
 				socket.current.send(JSON.stringify({
 					action: `attach_resource`,
 					payload
