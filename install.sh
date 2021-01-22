@@ -28,7 +28,7 @@ cp -rv ./config $INSTALL_DIR/.
 cd $INSTALL_DIR/backend
 /usr/bin/env python -m virtualenv venv
 source ./venv/bin/active
-pip install -r requirements.txt
+pip --no-cache install -r requirements.txt
 deactivate
 
 chown $INSTALL_USER:$INSTALL_USER -R $INSTALL_DIR
