@@ -17,11 +17,18 @@ yarn && yarn build || exit 1
 
 cp -rv ./build $INSTALL_DIR/frontend
 
+echo "=========================="
+echo "=== Installing Service ==="
+echo "=========================="
+
+cd ..
+cp systemd.service /usr/lib/systemd/system/motorcycle_management.service
+sed -i "s/USER/$INSTALL_USER/" /usr/lib/systemd/system/motorcycle_management.service
+
 echo "========================"
 echo "=== Building BackEnd ==="
 echo "========================"
 
-cd ..
 cp -rv ./backend $INSTALL_DIR/.
 cp -rv ./config $INSTALL_DIR/.
 
@@ -30,11 +37,3 @@ python -m virtualenv venv
 source ./venv/bin/activate && pip --no-cache install -r requirements.txt && deactivate
 
 chown $INSTALL_USER:$INSTALL_USER -R $INSTALL_DIR
-
-echo "=========================="
-echo "=== Installing Service ==="
-echo "=========================="
-
-cd $ACTUAL_DIR
-cp systemd.service /usr/lib/systemd/system/motorcycle_management.service
-sed -i "s/USER/$INSTALL_USER/" /usr/lib/systemd/system/motorcycle_management.service
