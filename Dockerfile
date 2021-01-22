@@ -36,6 +36,10 @@ WORKDIR /tmp/repo
 RUN cp ./supervisord.conf /etc/.
 RUN ./install.sh root
 
+RUN cp /etc/nginx/nginx.conf{,.bak} && \
+	cp /tmp/repo/docker-nginx.conf /etc/nginx/nginx.conf && \
+	cp /tmp/repo/nginx.conf /etc/nginx/conf.d/default.conf
+
 WORKDIR /
 EXPOSE 80
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]
