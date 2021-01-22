@@ -39,7 +39,7 @@ RUN ./install.sh root
 RUN cp /etc/nginx/nginx.conf{,.bak} && \
 	cp /tmp/repo/docker-nginx.conf /etc/nginx/nginx.conf && \
 	cp /tmp/repo/nginx.conf /etc/nginx/conf.d/default.conf && \
-	nginx -t -g 'damen off;'
+	nginx -t -g 'daemon off;'
 
 RUN rm -rdfv /tmp/repo
 
