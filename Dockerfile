@@ -37,4 +37,5 @@ RUN cp ./supervisord.conf /etc/.
 RUN ./install.sh root
 
 WORKDIR /
+EXPOSE 80
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]
