@@ -13,7 +13,7 @@ echo "=== Building FrontEnd ==="
 echo "========================="
 
 cd $ACTUAL_DIR/frontend
-yarn build || exit 1
+yarn && yarn build || exit 1
 
 cp -rv ./build $INSTALL_DIR/frontend
 

@@ -34,7 +34,7 @@ RUN echo "Installing Python Pre-Requisites"; \
 COPY . /tmp/repo
 WORKDIR /tmp/repo
 RUN cp ./supervisord.conf /etc/.
-RUN ./install.sh
+RUN ./install.sh root
 
 WORKDIR /
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]
