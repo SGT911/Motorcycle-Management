@@ -17,7 +17,7 @@ RUN echo "Adding MariaDB Repo"; \
 	yum update
 
 RUN echo "Installing All"; \
-	yum install -y nginx python3 python3-pip python3-devel MariaDB-server nodejs yarn
+	yum install -y nginx python python-pip python-devel MariaDB-server nodejs yarn
 
 RUN echo "Cleaning YUM"; \
 	yum clean all
