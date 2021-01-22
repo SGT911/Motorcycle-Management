@@ -1,0 +1,16 @@
+[Unit]
+Description=Backend service for "Motorcycle Management" app
+Before=nginx
+Requires=mariadb.service
+
+[Service]
+Type=simple
+User=USER
+Group=USER
+ExecStart=/usr/lib/motorcycle_management/backend/run.sh
+Restart=always
+RestartSec=5
+
+
+[Install]
+WantedBy=multi-user.target
