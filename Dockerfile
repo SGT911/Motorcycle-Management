@@ -23,7 +23,7 @@ RUN echo "Cleaning YUM"; \
 	yum clean all
 
 RUN echo "Installing Database"; \
-	echo -e "mysql admin\nn\ny\nmysql admin\nmysql admin\ny\nn\ny\ny\n" | mysql_secure_installation && \
+	mysql_secure_installation && \
 	mysqld_safe --nowatch && \
 	echo "CREATE DATABASE motorcycle_management;" | mysql && \
 	killall mysqld
